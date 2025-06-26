@@ -7,15 +7,100 @@
     "vscode": "^1.101.0"
   },
   "categories": [
-    "Other"
+    "Other",
+    "Machine Learning"
   ],
-  "activationEvents": [],
-  "main": "./dist/extension.js",
+    "activationEvents": [
+        "onStartupFinished",
+        "onCommand:batchAI.processWithTask",
+        "onCommand:batchAI.processWithPrompt"
+    ],
+    "main": "./dist/extension.js",
   "contributes": {
+    "configuration": {
+      "title": "Batch AI Operations",
+      "properties": {
+        "batchAI.llmProvider": {
+          "type": "string",
+          "enum": [
+            "vscode.lm",
+            "ollama"
+          ],
+          "default": "vscode.lm",
+          "description": "LLM provider to use for AI operations"
+        },
+        "batchAI.ollamaEndpoint": {
+          "type": "string",
+          "default": "http://localhost:11434",
+          "description": "Ollama endpoint URL"
+        },
+        "batchAI.defaultBatchSize": {
+          "type": "number",
+          "default": 1,
+          "minimum": 1,
+          "maximum": 50,
+          "description": "Default batch size for processing operations"
+        },
+        "batchAI.promptsFolder": {
+          "type": "string",
+          "default": ".vscode/prompts",
+          "description": "Folder containing prompt files (*.prompt.md)"
+        },
+        "batchAI.tasksFile": {
+          "type": "string",
+          "default": ".vscode/tasks.json",
+          "description": "Path to tasks configuration file"
+        }
+      }
+    },
     "commands": [
       {
-        "command": "batchprocessor.helloWorld",
-        "title": "Hello World"
+        "command": "batchAI.processWithTask",
+        "title": "Process with Task"
+      },
+      {
+        "command": "batchAI.processWithPrompt",
+        "title": "Process with Prompt"
+      },
+      {
+        "command": "batchAI.refreshPrompts",
+        "title": "Refresh Prompts"
+      },
+      {
+        "command": "batchAI.refreshTasks",
+        "title": "Refresh Tasks"
+      }
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "command": "batchAI.processWithTask",
+          "group": "batchAI.tasks",
+          "when": "explorerViewletVisible && filesExplorerFocus"
+        },
+        {
+          "command": "batchAI.processWithPrompt",
+          "group": "batchAI.prompts",
+          "when": "explorerViewletVisible && filesExplorerFocus"
+        }
+      ]
+    },
+    "submenus": [
+      {
+        "id": "batchAI.tasks",
+        "label": "Batch AI Tasks"
+      },
+      {
+        "id": "batchAI.prompts",
+        "label": "Batch AI Prompts"
+      }
+    ],
+    "chatParticipants": [
+      {
+        "id": "batchAI",
+        "name": "batchAI",
+        "description": "Batch AI operations assistant",
+        "isSticky": true
       }
     ]
   },
@@ -31,17 +116,24 @@
     "test": "vscode-test"
   },
   "devDependencies": {
-    "@types/vscode": "^1.101.0",
     "@types/mocha": "^10.0.10",
     "@types/node": "20.x",
+    "@types/vscode": "^1.101.0",
     "@typescript-eslint/eslint-plugin": "^8.31.1",
     "@typescript-eslint/parser": "^8.31.1",
-    "eslint": "^9.25.1",
-    "typescript": "^5.8.3",
-    "ts-loader": "^9.5.2",
-    "webpack": "^5.99.7",
-    "webpack-cli": "^6.0.1",
     "@vscode/test-cli": "^0.0.10",
-    "@vscode/test-electron": "^2.5.2"
+    "@vscode/test-electron": "^2.5.2",
+    "eslint": "^9.25.1",
+    "ts-loader": "^9.5.2",
+    "typescript": "^5.8.3",
+    "webpack": "^5.99.7",
+    "webpack-cli": "^6.0.1"
+  },
+  "dependencies": {
+    "axios": "^1.10.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pratulsm/batchprocessor.git"
   }
 }
