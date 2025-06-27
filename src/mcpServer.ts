@@ -198,7 +198,7 @@ export class MCPServer {
             // Get the item (task or prompt)
             let item;
             if (type === 'task') {
-                item = this.taskManager.getTask(item_name);
+                item = this.taskManager.getTasks().find(item_name);
                 if (!item) {
                     return {
                         error: {

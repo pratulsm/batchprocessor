@@ -74,14 +74,24 @@
     "menus": {
       "explorer/context": [
         {
-          "command": "batchAI.processWithTask",
-          "group": "batchAI.tasks",
+          "submenu": "batchAI.tasks",
+          "group": "navigation",
           "when": "explorerViewletVisible && filesExplorerFocus"
         },
         {
-          "command": "batchAI.processWithPrompt",
-          "group": "batchAI.prompts",
+          "submenu": "batchAI.prompts",
+          "group": "navigation",
           "when": "explorerViewletVisible && filesExplorerFocus"
+        }
+      ],
+      "batchAI.tasks": [
+        {
+          "command": "batchAI.processWithTask"
+        }
+      ],
+      "batchAI.prompts": [
+        {
+          "command": "batchAI.processWithPrompt"
         }
       ]
     },

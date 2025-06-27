@@ -75,7 +75,9 @@ export class ChatParticipant {
         // Get the item
         let item;
         if (type === 'task') {
-            item = this.taskManager.getTask(itemName);
+            item = this.taskManager.getTasks().find(
+                task => task.label === itemName || task.command === itemName
+            );
             if (!item) {
                 stream.markdown(`❌ **Error**: Task '${itemName}' not found`);
                 return;
@@ -153,7 +155,7 @@ Results have been saved to \`.vscode/batch-ai-results/\``);
             stream.markdown(`📋 **Available Tasks** (${tasks.length}):\n`);
             for (const task of tasks) {
                 const label = task.label || task.command;
-                const description = task.description || task.aiPrompt || 'No description';
+                const description = task.aiPrompt || 'No description';
                 stream.markdown(`- **${label}**: ${description}`);
             }
         } else {
